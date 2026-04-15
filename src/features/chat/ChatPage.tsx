@@ -10,7 +10,13 @@ import { MessageList } from './components/MessageList'
 
 export function ChatPage() {
   const { author, setAuthor } = useLocalStorageAuthor()
-  const { data: messages = [], isPending, error: messagesError } = useMessages()
+  const {
+    data: messages = [],
+    isPending,
+    error: messagesError,
+    refetch,
+    isFetching,
+  } = useMessages()
   const sendMessage = useSendMessage()
 
   const handleSend = useCallback(
@@ -31,6 +37,7 @@ export function ChatPage() {
   )
 
   const loadErrorMessage = messagesError ? formatErrorForToast(messagesError) : null
+  const isRetryingLoad = Boolean(messagesError) && isFetching
 
   return (
     <div className="bg-chat-bg flex min-h-0 flex-1 flex-col overflow-hidden">
@@ -62,6 +69,8 @@ export function ChatPage() {
             currentAuthor={author}
             isLoading={isPending}
             errorMessage={loadErrorMessage}
+            onRetry={() => void refetch()}
+            isRetrying={isRetryingLoad}
           />
         </div>
       </main>

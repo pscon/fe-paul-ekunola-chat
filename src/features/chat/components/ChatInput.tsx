@@ -54,7 +54,7 @@ export function ChatInput({ onSend, isSending = false }: ChatInputProps) {
         disabled={submitDisabled}
         aria-label={isSending ? 'Sending message' : 'Send message'}
         className={cn(
-          'flex min-h-11 min-w-[7.25rem] shrink-0 items-center justify-center gap-2 rounded-md px-4 text-sm font-semibold text-white transition-colors',
+          'flex min-h-11 min-w-[7.25rem] cursor-pointer shrink-0 items-center justify-center gap-2 rounded-md px-4 text-sm font-semibold text-white transition-colors',
           'focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-chat-footer',
           isSending
             ? 'bg-chat-send cursor-wait'

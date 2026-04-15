@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react'
 import type { ChatMessage } from '../../../types/message'
 import { formatMessageTime, isOwnMessage } from '../../../utils'
 import { ChatSkeleton } from './ChatSkeleton'
+import { MessageLoadError } from './MessageLoadError'
 import { MessageBubble } from './MessageBubble'
 
 export type MessageListProps = {
@@ -9,9 +10,18 @@ export type MessageListProps = {
   currentAuthor: string
   isLoading: boolean
   errorMessage: string | null
+  onRetry: () => void
+  isRetrying: boolean
 }
 
-export function MessageList({ messages, currentAuthor, isLoading, errorMessage }: MessageListProps) {
+export function MessageList({
+  messages,
+  currentAuthor,
+  isLoading,
+  errorMessage,
+  onRetry,
+  isRetrying,
+}: MessageListProps) {
   const bottomRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -24,17 +34,7 @@ export function MessageList({ messages, currentAuthor, isLoading, errorMessage }
 
   if (errorMessage) {
     return (
-      <div
-        className="border-chat-send/40 bg-chat-surface text-chat-body m-2 rounded border px-3 py-4 text-sm shadow-sm"
-        role="alert"
-      >
-        <p className="font-medium">Could not load messages.</p>
-        <p className="text-chat-muted mt-1">{errorMessage}</p>
-        <p className="text-chat-muted mt-2 text-xs">
-          Ensure the API is running and <code className="rounded bg-black/5 px-1">.env</code> matches{' '}
-          <code className="rounded bg-black/5 px-1">.env.example</code>.
-        </p>
-      </div>
+      <MessageLoadError technicalMessage={errorMessage} onRetry={onRetry} isRetrying={isRetrying} />
     )
   }
 
