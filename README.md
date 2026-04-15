@@ -43,6 +43,13 @@ A responsive chat UI built with **React**, **TypeScript**, **Vite**, **Tailwind 
 | `npm run build` | Typecheck and production build |
 | `npm run test:run` | Run tests
 
+## Quality notes
+
+- Added automated tests for core utility and chat message behavior.
+- Improved accessibility across the chat flow with clear form labels, screen-reader friendly message announcements, and accessible button/input states.
+- Added resilient UI states for loading, empty, and error/retry scenarios.
+- Persisted the author name locally so users do not need to re-enter it on refresh.
+
 ## Architecture
 
 - **`src/api/`** HTTP client with Bearer auth, message helpers, and `mapApiMessage` when the API shape differs from the UI types.
