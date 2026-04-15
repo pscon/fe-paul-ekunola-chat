@@ -2,6 +2,10 @@
 
 A responsive chat UI built with **React**, **TypeScript**, **Vite**, **Tailwind CSS v4**, and **TanStack Query**. It lists messages from the challenge API and sends new messages with a Bearer token.
 
+## Preview
+
+![Chat UI](src/assets/Screenshot.png)
+
 ## Prerequisites
 
 - Node.js 20+ (recommended)
