@@ -3,7 +3,7 @@ import { listMessages } from '../api/messages'
 import { queryKeys } from '../constants/queryKeys'
 import { sortMessagesChronological } from '../utils'
 
-const DEFAULT_LIMIT = 80
+const DEFAULT_LIMIT = 50
 
 // Loads the thread from the API
 export function useMessages() {

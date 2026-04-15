@@ -22,9 +22,8 @@ export const MessageBubble = memo(function MessageBubble({
             'w-fit max-w-[min(100%,26.25rem)] rounded-md border p-4 shadow-sm',
             'border-bubble-outgoing-border bg-bubble-outgoing text-chat-body',
           )}
-          aria-label={`You said: ${text}`}
+          aria-label={`Your message: ${text}`}
         >
-          <p className="text-chat-muted mb-1 text-xs">You</p>
           <p className="whitespace-pre-wrap break-words text-sm leading-snug">{text}</p>
           <p className="text-chat-muted mt-2 text-right text-xs">{timeLabel}</p>
         </article>

@@ -16,7 +16,6 @@
 }
 
 @layer base {
-  /* Lock app to the viewport so only the message list scrolls (header/footer stay put on overscroll). */
   html {
     height: 100dvh;
     max-height: 100dvh;
@@ -47,7 +46,6 @@
   }
 }
 
-/* Challenge asset: repeating doodle pattern */
 .chat-pattern-bg {
   background-color: var(--color-chat-bg);
   background-image: url('./assets/pattern-bg.png');
@@ -55,7 +53,6 @@
   background-position: 0 0;
 }
 
-/* Hide scrollbar but keep scrolling (trackpad / wheel / touch still work). */
 .scrollbar-none {
   -ms-overflow-style: none;
   scrollbar-width: none;

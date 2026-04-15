@@ -19,18 +19,19 @@ describe('MessageBubble', () => {
     expect(screen.getByText('10 Mar 2018 9:55')).toBeInTheDocument()
   })
 
-  it('renders outgoing layout with You label', () => {
+  it('renders outgoing layout without sender line (matches mockup)', () => {
     render(
       <ul>
         <MessageBubble
-          author="You"
+          author="Paul Ekunola"
           text="Hello"
           timeLabel="12 Mar 2018 14:38"
           isOwn
         />
       </ul>,
     )
-    expect(screen.getByText('You')).toBeInTheDocument()
+    expect(screen.queryByText('Paul Ekunola')).not.toBeInTheDocument()
     expect(screen.getByText('Hello')).toBeInTheDocument()
+    expect(screen.getByText('12 Mar 2018 14:38')).toBeInTheDocument()
   })
 })

@@ -1,24 +1,36 @@
 import { useCallback } from 'react'
+import { toast } from 'sonner'
+import { formatErrorForToast } from '../../api/errorMessage'
+import { DEFAULT_AUTHOR_NAME } from '../../constants/storageKeys'
 import { useLocalStorageAuthor } from '../../hooks/useLocalStorageAuthor'
 import { useMessages } from '../../hooks/useMessages'
 import { useSendMessage } from '../../hooks/useSendMessage'
-import { toError } from '../../utils'
 import { ChatInput } from './components/ChatInput'
 import { MessageList } from './components/MessageList'
 
 export function ChatPage() {
   const { author, setAuthor } = useLocalStorageAuthor()
-  const { data: messages = [], isPending, error } = useMessages()
+  const { data: messages = [], isPending, error: messagesError } = useMessages()
   const sendMessage = useSendMessage()
 
   const handleSend = useCallback(
     async (text: string) => {
-      await sendMessage.mutateAsync({ message: text, author })
+      const name = author.trim()
+      if (!name) {
+        toast.error('Add your name in the header before sending a message.')
+        throw new Error('Author required')
+      }
+      try {
+        await sendMessage.mutateAsync({ message: text, author: name })
+      } catch (e) {
+        toast.error(formatErrorForToast(e))
+        throw e
+      }
     },
     [author, sendMessage],
   )
 
-  const queryError = toError(error)
+  const loadErrorMessage = messagesError ? formatErrorForToast(messagesError) : null
 
   return (
     <div className="bg-chat-bg flex min-h-0 flex-1 flex-col overflow-hidden">
@@ -37,7 +49,7 @@ export function ChatPage() {
               value={author}
               onChange={(e) => setAuthor(e.target.value)}
               className="min-h-9 w-full min-w-48 rounded border border-white/40 bg-white/10 px-2 py-1 text-sm text-white placeholder:text-white/60 outline-none focus-visible:ring-2 focus-visible:ring-white/80 sm:max-w-xs"
-              placeholder="e.g. You"
+              placeholder={`e.g. ${DEFAULT_AUTHOR_NAME}`}
             />
           </div>
         </div>
@@ -49,14 +61,14 @@ export function ChatPage() {
             messages={messages}
             currentAuthor={author}
             isLoading={isPending}
-            error={queryError}
+            errorMessage={loadErrorMessage}
           />
         </div>
       </main>
 
       <footer className="bg-chat-footer shrink-0 pb-[env(safe-area-inset-bottom)] shadow-[0_-2px_8px_rgba(0,0,0,0.08)]">
         <div className="mx-auto w-full max-w-[640px] px-6 py-2">
-          <ChatInput onSend={handleSend} disabled={sendMessage.isPending} />
+          <ChatInput onSend={handleSend} isSending={sendMessage.isPending} />
         </div>
       </footer>
     </div>

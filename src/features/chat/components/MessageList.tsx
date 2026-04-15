@@ -1,16 +1,17 @@
 import { useEffect, useRef } from 'react'
 import type { ChatMessage } from '../../../types/message'
 import { formatMessageTime, isOwnMessage } from '../../../utils'
+import { ChatSkeleton } from './ChatSkeleton'
 import { MessageBubble } from './MessageBubble'
 
 export type MessageListProps = {
   messages: ChatMessage[]
   currentAuthor: string
   isLoading: boolean
-  error: Error | null
+  errorMessage: string | null
 }
 
-export function MessageList({ messages, currentAuthor, isLoading, error }: MessageListProps) {
+export function MessageList({ messages, currentAuthor, isLoading, errorMessage }: MessageListProps) {
   const bottomRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -18,21 +19,17 @@ export function MessageList({ messages, currentAuthor, isLoading, error }: Messa
   }, [messages])
 
   if (isLoading) {
-    return (
-      <div className="text-chat-muted flex flex-1 items-center justify-center py-12 text-sm" role="status">
-        Loading messages…
-      </div>
-    )
+    return <ChatSkeleton />
   }
 
-  if (error) {
+  if (errorMessage) {
     return (
       <div
         className="border-chat-send/40 bg-chat-surface text-chat-body m-2 rounded border px-3 py-4 text-sm shadow-sm"
         role="alert"
       >
         <p className="font-medium">Could not load messages.</p>
-        <p className="text-chat-muted mt-1">{error.message}</p>
+        <p className="text-chat-muted mt-1">{errorMessage}</p>
         <p className="text-chat-muted mt-2 text-xs">
           Ensure the API is running and <code className="rounded bg-black/5 px-1">.env</code> matches{' '}
           <code className="rounded bg-black/5 px-1">.env.example</code>.

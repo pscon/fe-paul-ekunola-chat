@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useState } from 'react'
-import { AUTHOR_STORAGE_KEY } from '../constants/storageKeys'
+import { AUTHOR_STORAGE_KEY, DEFAULT_AUTHOR_NAME } from '../constants/storageKeys'
 
 function readStoredAuthor(): string {
-  if (typeof window === 'undefined') return 'You'
-  return window.localStorage.getItem(AUTHOR_STORAGE_KEY) ?? 'You'
+  if (typeof window === 'undefined') return DEFAULT_AUTHOR_NAME
+  return window.localStorage.getItem(AUTHOR_STORAGE_KEY) ?? DEFAULT_AUTHOR_NAME
 }
 
-// Display name in localStorage, POST body uses it as `author`, bubbles use it to spot "you"
+// Display name in localStorage, POST body uses it as `author`
 export function useLocalStorageAuthor() {
   const [author, setAuthorState] = useState<string>(readStoredAuthor)
 

@@ -4,38 +4,29 @@ import { decodeHtmlEntities } from '../utils'
 import { apiRequest } from './client'
 
 export function mapApiMessage(raw: MessageDto, index: number): ChatMessage {
-  const rawId = raw.id ?? raw._id
-  const id = rawId !== undefined && rawId !== '' ? String(rawId) : `msg-${index}`
-  const text = decodeHtmlEntities(raw.message ?? raw.text ?? raw.body ?? '')
+  const id = raw._id ? String(raw._id) : `msg-${index}`
+  const text = decodeHtmlEntities(raw.message ?? '')
   const author = decodeHtmlEntities(raw.author?.trim() || 'Unknown')
-  const iso = raw.createdAt ?? raw.created_at ?? raw.timestamp
-  const createdAt = iso ? new Date(iso) : new Date()
+  const createdAt = raw.createdAt ? new Date(raw.createdAt) : new Date()
   return { id, text, author, createdAt }
 }
 
 function normalizeMessagesPayload(data: unknown): ChatMessage[] {
-  if (Array.isArray(data)) {
-    return data.map((item, i) => mapApiMessage(item as MessageDto, i))
-  }
-  if (data && typeof data === 'object') {
-    const record = data as Record<string, unknown>
-    const nested = record.messages ?? record.data ?? record.items
-    if (Array.isArray(nested)) {
-      return nested.map((item, i) => mapApiMessage(item as MessageDto, i))
-    }
-  }
-  return []
+  if (!Array.isArray(data)) return []
+  return data.map((item, i) => mapApiMessage(item as MessageDto, i))
 }
 
 export type ListMessagesParams = {
   limit?: number
   after?: string
+  before?: string
 }
 
 export async function listMessages(params?: ListMessagesParams): Promise<ChatMessage[]> {
   const search = new URLSearchParams()
   if (params?.limit !== undefined) search.set('limit', String(params.limit))
   if (params?.after) search.set('after', params.after)
+  if (params?.before) search.set('before', params.before)
   const qs = search.toString()
   const path = `/api/v1/messages${qs ? `?${qs}` : ''}`
   const data = await apiRequest<unknown>(path, { method: 'GET' })
