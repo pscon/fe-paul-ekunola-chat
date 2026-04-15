@@ -37,10 +37,7 @@ A responsive chat UI built with **React**, **TypeScript**, **Vite**, **Tailwind 
 | --- | --- |
 | `npm run dev` | Vite dev server |
 | `npm run build` | Typecheck and production build |
-| `npm run preview` | Preview production build |
-| `npm run lint` | ESLint |
-| `npm run test` | Vitest (watch) |
-| `npm run test:run` | Vitest (CI) |
+| `npm run test:run` | Run tests
 
 ## Architecture
 
@@ -55,8 +52,6 @@ A responsive chat UI built with **React**, **TypeScript**, **Vite**, **Tailwind 
 - `GET /api/v1/messages` supports optional query params such as `limit`, `after`, and `before`.
 - `POST /api/v1/messages` expects JSON `{ "message": string, "author": string }`.
 - All routes require `Authorization: Bearer <token>`.
-
-If the response JSON uses different property names, adjust mapping only in [`src/api/messages.ts`](src/api/messages.ts).
 
 ## Author
 
