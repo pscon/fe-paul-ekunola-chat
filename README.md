@@ -25,7 +25,10 @@ A responsive chat UI built with **React**, **TypeScript**, **Vite**, **Tailwind 
    cp .env.example .env
    ```
 
-   Edit `.env` so `VITE_API_BASE_URL` points at your API (e.g. `http://localhost:3000`) and `VITE_AUTH_TOKEN` matches the API’s expected Bearer token.
+Update `.env`:
+
+- VITE_API_BASE_URL=http://localhost:3000
+- VITE_AUTH_TOKEN=your-token
 
 3. Start the app:
 
@@ -41,7 +44,7 @@ A responsive chat UI built with **React**, **TypeScript**, **Vite**, **Tailwind 
 | --- | --- |
 | `npm run dev` | Vite dev server |
 | `npm run build` | Typecheck and production build |
-| `npm run test:run` | Run tests
+| `npm run test:run` | Run tests |
 
 ## Quality notes
 
@@ -59,9 +62,15 @@ A responsive chat UI built with **React**, **TypeScript**, **Vite**, **Tailwind 
 ## API notes
 
 - `GET /api/v1/messages` supports optional query params such as `limit`, `after`, and `before`.
-- `POST /api/v1/messages` expects JSON `{ "message": string, "author": string }`.
-- All routes require `Authorization: Bearer <token>`.
+- `POST /api/v1/messages`
+```md
+  Body:
+```json
+{ "message": "string", "author": "string" }
+   ```
+- All endpoints require:
+`Authorization: Bearer <token>`
 
 ## Author
 
-Paul Ekunola
+**Paul Ekunola**
